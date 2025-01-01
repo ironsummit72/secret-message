@@ -1,0 +1,55 @@
+services:
+  database:
+    image: mongo
+    container_name: mongodb
+    ports:
+      - 27019:27017
+    networks:
+      - sm-net
+
+  backend:
+    container_name: backend
+    build:
+      dockerfile: Dockerfile
+      context: ./backend
+    ports:
+      - 5001:5001
+    environment:
+      - PORT=5001
+      - ORIGIN=http://localhost:3001
+      - MONGODB_URL=mongodb://database
+      - DB_NAME=secret-message
+      - SECRET=secretmessage
+    depends_on:
+      - database
+    networks:
+      - sm-net
+
+  frontend:
+    container_name: frontend
+    build:
+      dockerfile: Dockerfile
+      context: ./frontend
+    environment:
+      - VITE_BASE_URL=/api
+    depends_on:
+      - backend
+      - api-gateway
+    networks:
+      - sm-net
+
+  api-gateway:
+    container_name: gateway
+    build:
+      dockerfile: Dockerfile
+      context: ./api-gateway
+    ports:
+      - 3001:3001
+    depends_on:
+      - backend
+    networks:
+      - sm-net
+
+networks:
+  sm-net:
+    driver: bridge
