@@ -1,20 +1,25 @@
 import express,{Request,Response} from "express";
 import cors from "cors";
-import "dotenv/config";
+import {configDotenv} from "dotenv";
 import mongoose from "mongoose";
 import morgan from "morgan";
 import messageRouter from "./routes/message.routes";
 import cookieParser from 'cookie-parser'
 import jwt from 'jsonwebtoken'
+configDotenv()
+
 const port = process.env.PORT || 5001;
 const app = express();
 
 app.use(
   cors({
-    origin: ['http://localhost:5173','http://127.0.0.1'],
-    credentials:true
+    origin: process.env.ORIGIN,
+    credentials:true,
+    methods:['POST','GET','PATCH','PUT']
   })
 );
+console.log("ORIGIN",process.env.ORIGIN);
+
 app.use(morgan("common"));
 //db connection
 connectDatabase();
