@@ -19,6 +19,7 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import { getUserDetails, patchCreateMessage } from "@/QueryFunction";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import Navbar from "@/components/custom/Navbar";
 const formSchema = z.object({
   message: z
     .string()
@@ -69,6 +70,8 @@ const [messageIsSent,setMessageIsSent]=useState<boolean>(false)
     }
   }
   return (
+  <>
+  <Navbar/>
     <div className="bg-gradient-to-r from-violet-600 to-indigo-600 min-h-screen flex items-center justify-center">
       <Helmet>
         <title>secret-message</title>
@@ -128,6 +131,7 @@ const [messageIsSent,setMessageIsSent]=useState<boolean>(false)
         </CardContent>
       </Card>
     </div>
+  </>
   );
 }
 export default Secret;
