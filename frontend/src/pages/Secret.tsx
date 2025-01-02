@@ -17,6 +17,8 @@ import { useToast } from "@/hooks/use-toast";
 import { useParams } from "react-router-dom";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { getUserDetails, patchCreateMessage } from "@/QueryFunction";
+import { Link } from "react-router-dom";
+import { useState } from "react";
 const formSchema = z.object({
   message: z
     .string()
@@ -29,6 +31,7 @@ const formSchema = z.object({
 function Secret() {
   const { id } = useParams();
   const { toast } = useToast();
+const [messageIsSent,setMessageIsSent]=useState<boolean>(false)
 
   const { data: userdata } = useQuery({
     queryKey: ["user", id],
@@ -47,10 +50,10 @@ function Secret() {
         title: "message sent successfully",
         description: data?.data.message,
       });
-      form.resetField('message');
+      form.resetField("message");
+      setMessageIsSent(true)
     },
   });
-
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -113,9 +116,13 @@ function Secret() {
                   </FormItem>
                 )}
               />
-              <Button className="w-full md:w-20" type="submit">
+            <div className="flex  gap-4">  <Button className="w-full md:w-20" type="submit">
                 Send
               </Button>
+             {messageIsSent && <Button asChild >
+                <Link to={"/create"}>Create Your Own (Generate Link)</Link>
+              </Button>}
+              </div>
             </form>
           </Form>
         </CardContent>
