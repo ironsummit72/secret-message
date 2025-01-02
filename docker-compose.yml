@@ -3,9 +3,12 @@ services:
     image: mongo
     container_name: mongodb
     ports:
-      - 27019:27017
+      - 27018:27017
     networks:
       - sm-net
+    restart: on-failure
+    volumes:
+    - ./data:/data/db
 
   backend:
     container_name: backend
@@ -24,6 +27,7 @@ services:
       - database
     networks:
       - sm-net
+    restart: on-failure
 
   frontend:
     container_name: frontend
