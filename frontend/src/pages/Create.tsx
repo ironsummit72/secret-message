@@ -35,6 +35,7 @@ const formSchema = z.object({
     .trim(),
 });
 function App() {
+ 
   const dispatch = useDispatch();
   const [buttonText, setButtonText] = useState<"Copy Link" | "Link copied">(
     "Copy Link"
@@ -54,6 +55,7 @@ function App() {
         console.error(error);
       });
   }, [dispatch]);
+ 
   const mutation = useMutation({
     mutationFn: (user: string) => postCreateUser(user),
     onError: (err) => {
@@ -158,7 +160,7 @@ function App() {
         <Card className="min-w-[90%] md:min-w-[70%] lg:min-w-[50%] lg:h-52 h-52 flex items-center justify-center mt-10" >
           <CardContent className="flex flex-col gap-5 w-[90%]">
             <h2 className="text-gray-500">
-              Hi, Your link has been generated Successfully
+              Hi, <span className="text-black font-medium">{userdata?.data.fullname}</span> Your link has been generated Successfully
             </h2>
             <Input className="w-[100%]" defaultValue={link} readOnly />
             <Button
