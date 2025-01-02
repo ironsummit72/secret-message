@@ -19,13 +19,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import copy from "copy-to-clipboard";
 import { useEffect, useState } from "react";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getMessages, postCreateUser } from "../QueryFunction";
 import axiosInstance from "../axios/axiosInstance";
 import { login, logout } from "../redux/Slices/AuthSlice";
 import { Check } from "lucide-react";
 import Navbar from "@/components/custom/Navbar";
-
+import { RefreshCcw } from "lucide-react"
 const formSchema = z.object({
   fullname: z
     .string()
@@ -80,6 +80,7 @@ function App() {
   const [link, setLink] = useState<string>("");
 
   const { toast } = useToast();
+  const queryClient=useQueryClient()
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -93,7 +94,9 @@ function App() {
       mutation.mutate(values.fullname);
     }
   }
-
+const handleOnRefresh=()=>{
+  queryClient.invalidateQueries({queryKey:['userdetails']})
+}
   if (auth.isUserauthenticated === false) {
     return (
       <>
@@ -163,13 +166,13 @@ function App() {
           <CardContent className="flex flex-col gap-5 w-[90%]">
             <h2 className="text-gray-500">
               Hi,{" "}
-              <span className="text-black font-medium">
+              <span title="Your name" className="text-black font-medium">
                 {userdata?.data.fullname}
               </span>{" "}
               Your link has been generated Successfully
             </h2>
-            <Input className="w-[100%]" defaultValue={link} readOnly />
-            <Button
+            <Input  className="w-[100%]" defaultValue={link} readOnly />
+            <Button title="Copy Link"
               className={`lg:w-28 lg:px-20 w-full ${
                 buttonText === "Link copied"
                   ? "bg-green-500 hover:bg-green-600"
@@ -186,7 +189,9 @@ function App() {
           </CardContent>
         </Card>
         <Card className="min-w-[90%] md:min-w-[70%] lg:min-w-[50%] lg:h-auto h-auto flex flex-col items-center justify-start h-auto mb-20 mx-7">
-          <CardHeader>Message Responses</CardHeader>
+          <CardHeader ><div>
+          Message Responses <Button title="Refresh" onClick={handleOnRefresh} className="w-fit" variant={'ghost'}><RefreshCcw/></Button>
+            </div></CardHeader>
           <CardContent className="flex flex-col gap-5 w-[90%] h-auto">
             {userdata?.data.messages.map((messages: string, index: number) => (
               <div
