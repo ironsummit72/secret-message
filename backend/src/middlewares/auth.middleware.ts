@@ -13,6 +13,6 @@ export async function basicAuth(
     next();
   } else {
     res.status(400).json({ message: "something went wrong or user not found" });
-    next();
+    // next();
   }
 }

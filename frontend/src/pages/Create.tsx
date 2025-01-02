@@ -45,6 +45,7 @@ function App() {
       .get("/currentuser")
       .then((res) => {
         if (res.data.user) {
+         dispatch(login(res.data.user))
           setLink(`${window.origin}/secret/${res.data.user}`);
         }
       })
@@ -179,7 +180,7 @@ function App() {
         <Card className="min-w-[90%] md:min-w-[70%] lg:min-w-[50%] lg:h-auto h-auto flex flex-col items-center justify-start h-auto mb-20 mx-7">
           <CardHeader>Message Responses</CardHeader>
           <CardContent className="flex flex-col gap-5 w-[90%] h-auto">
-          {userdata?.data.messages.map((messages:string)=><div className="border-2 border-black p-2 rounded-lg w-[95%] h-auto">{messages}</div>)}
+          {userdata?.data.messages.map((messages:string,index:number)=><div key={messages+index} className="border-2 border-black p-2 rounded-lg w-[95%] h-auto">{messages}</div>)}
           </CardContent>
         </Card>
       </div>
