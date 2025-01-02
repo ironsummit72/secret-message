@@ -8,7 +8,7 @@ export async function createUser(req: Request, res: Response) {
   const { fullname }: bodyType = req.body;
   const dbResponse = await userModel.create({ fullname });
   if (dbResponse) {
-    const token = jwt.sign({ _id: dbResponse.id }, process.env.SECRET!);
+    const token = jwt.sign({ _id: dbResponse.id }, process.env.SECRET!,{expiresIn:'2d'});
     res.cookie("session", token);
     res.status(200).json({
       message:
