@@ -9,7 +9,7 @@ export async function createUser(req: Request, res: Response) {
   const dbResponse = await userModel.create({ fullname });
   if (dbResponse) {
     const token = jwt.sign({ _id: dbResponse.id }, process.env.SECRET!,{expiresIn:'2d'});
-    res.cookie("session", token);
+    res.cookie("session", token,{maxAge:172800000});
     res.status(200).json({
       message:
         "user created successfully now you can share this link to other user to know what message they have for you ",
