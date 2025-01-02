@@ -61,5 +61,31 @@ Follow these steps to run the project locally:
 
   5. Open the app in your browser:
 Visit `http://localhost:5137`
+
+
+
+### 🐳 Docker Compose
+Easily run the SecretMessage platform using Docker Compose for streamlined setup and deployment.
+
+**Steps to Run**
+1) Clone the Repository
+```bash
+git clone https://github.com/ironsummit72/secret-message.git
+cd secret-message
+```
+2) Build and Start Services
+    Run the following command to build and start the services:
+```bash
+docker-compose up --build
+```
+3) Stop Services
+   To stop the services,press `CTRL+C` and run:
+
+```bash
+docker-compose down
+```
+   
+ 
+
 # 📝 Disclaimer
 **SecretMessage** is designed for entertainment only. We encourage users to use this platform respectfully and responsibly.
