@@ -47,6 +47,7 @@ function Secret() {
         title: "message sent successfully",
         description: data?.data.message,
       });
+      form.resetField('message');
     },
   });
 

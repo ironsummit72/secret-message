@@ -37,6 +37,7 @@ export async function createMessage(req: Request, res: Response) {
 }
 export async function getMessages(req: Request, res: Response) {
   const loggedInUser = req.user?.id;
+ try {
   if (loggedInUser) {
     const dbResponse = await userModel.findById(loggedInUser, { __v: 0 });
     if (dbResponse) {
@@ -51,6 +52,11 @@ export async function getMessages(req: Request, res: Response) {
   } else {
     res.status(400).json({ message: "something went wrong..." });
   }
+  
+ } catch (error) {
+  console.error(error);
+  
+ }
 }
 export async function getUserDetails(req: Request, res: Response) {
   const { id } = req.params;
